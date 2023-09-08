@@ -71,9 +71,9 @@ export default function page() {
               7. <b>Indemnification:</b>
               You agree to indemnify and hold Amejro and its affiliates,
               officers, agents, and employees harmless from any claim or demand,
-              including reasonable attorneys' fees, made by any third party due
-              to or arising out of your use of Amejro or the violation of these
-              Terms of Service.
+              including reasonable attorney&apos;s fees, made by any third party
+              due to or arising out of your use of Amejro or the violation of
+              these Terms of Service.
             </p>
 
             <p className="mb-6">
