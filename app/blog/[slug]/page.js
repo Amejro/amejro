@@ -3,7 +3,9 @@ import Image from "next/image";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 const { END_POINT, HOST_URL } = process.env;
 export async function generateMetadata({ params }) {
-  const result = await fetch(`${END_POINT}`).then((res) => res.json());
+  const result = await fetch(`${END_POINT}`, { next: { revalidate: 60 } }).then(
+    (res) => res.json()
+  );
 
   const posts = await result.response.results;
   const blog_post = await posts?.find(

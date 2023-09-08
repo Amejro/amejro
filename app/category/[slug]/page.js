@@ -9,7 +9,7 @@ async function page({ params }) {
   // ................................Latest.....................
 
   const latestRes = await fetch(`${END_POINT}/latest`, {
-    next: { cache: "no-store" },
+    next: { revalidate: 60 },
   });
 
   const latestdata = await latestRes.json();
@@ -17,7 +17,7 @@ async function page({ params }) {
 
   //  ..................................Child..........................
   const childRes = await fetch(`${END_POINT}/child`, {
-    next: { cache: "no-store" },
+    next: { revalidate: 60 },
   });
 
   const childdata = await childRes.json();
@@ -25,7 +25,7 @@ async function page({ params }) {
 
   //  ..................................OldPosts..........................
   const oldpostsRes = await fetch(`${END_POINT}/oldposts`, {
-    next: { cache: "no-store" },
+    next: { revalidate: 60 },
   });
 
   const oldpostsdata = await oldpostsRes.json();
@@ -33,7 +33,7 @@ async function page({ params }) {
 
   // ...............................------................................
   const cat = await fetch(`${END_POINT}/category/${params.slug}`, {
-    next: { cache: "no-store" },
+    next: { revalidate: 60 },
   });
   return (
     <div className="h-full">

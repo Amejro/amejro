@@ -10,24 +10,30 @@ export const metadata = {
 
 export default async function Home() {
   // ..............................All Posts.....................
-  const res = await fetch(`${END_POINT}`);
+  const res = await fetch(`${END_POINT}`, { next: { revalidate: 60 } });
   const data = await res.json();
   const posts = await data.response.results;
 
   // ................................Latest.....................
-  const latestRes = await fetch(`${END_POINT}/latest`);
+  const latestRes = await fetch(`${END_POINT}/latest`, {
+    next: { revalidate: 60 },
+  });
 
   const latestdata = await latestRes.json();
   const latestPost = await latestdata.response.results;
 
   //  ..................................Child..........................
-  const childRes = await fetch(`${END_POINT}/child`);
+  const childRes = await fetch(`${END_POINT}/child`, {
+    next: { revalidate: 60 },
+  });
 
   const childdata = await childRes.json();
   const childPosts = await childdata.response.results;
 
   //  ..................................OldPosts..........................
-  const oldpostsRes = await fetch(`${END_POINT}/oldposts`);
+  const oldpostsRes = await fetch(`${END_POINT}/oldposts`, {
+    next: { revalidate: 60 },
+  });
 
   const oldpostsdata = await oldpostsRes.json();
   const oldPosts = await oldpostsdata.response.results;
