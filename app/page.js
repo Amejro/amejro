@@ -3,19 +3,21 @@ import Image from "next/image";
 import ListCard from "./components/cards/ListCard";
 import CategoryCard from "./components/cards/CategoryCard";
 import HeroCard from "./components/cards/HeroCard";
-const { END_POINT } = process.env;
+// const { END_POINT } = process.env;
 export const metadata = {
   description: "Read more.",
 };
 
 export default async function Home() {
   // ..............................All Posts.....................
-  const res = await fetch(`${END_POINT}`, { next: { revalidate: 60 } });
+  const res = await fetch(`${process.env.END_POINT}`, {
+    next: { revalidate: 60 },
+  });
   const data = await res.json();
   const posts = await data.response.results;
 
   // ................................Latest.....................
-  const latestRes = await fetch(`${END_POINT}/latest`, {
+  const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
     next: { revalidate: 60 },
   });
 
@@ -23,7 +25,7 @@ export default async function Home() {
   const latestPost = await latestdata.response.results;
 
   //  ..................................Child..........................
-  const childRes = await fetch(`${END_POINT}/child`, {
+  const childRes = await fetch(`${process.env.END_POINT}/child`, {
     next: { revalidate: 60 },
   });
 
@@ -31,7 +33,7 @@ export default async function Home() {
   const childPosts = await childdata.response.results;
 
   //  ..................................OldPosts..........................
-  const oldpostsRes = await fetch(`${END_POINT}/oldposts`, {
+  const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
     next: { revalidate: 60 },
   });
 

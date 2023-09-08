@@ -7,12 +7,12 @@ import { NextResponse } from "next/server";
 // });
 
 import { notion } from "app/config/notion";
-const { CATEGORY_DB } = process.env;
+// const { CATEGORY_DB } = process.env;
 
 export async function GET(req, res) {
   NextResponse;
   const response = await notion.databases.query({
-    database_id: CATEGORY_DB,
+    database_id: process.env.CATEGORY_DB,
     filter: {
       property: "Status",
       select: {

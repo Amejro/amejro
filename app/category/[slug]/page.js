@@ -8,7 +8,7 @@ const { END_POINT } = process.env;
 async function page({ params }) {
   // ................................Latest.....................
 
-  const latestRes = await fetch(`${END_POINT}/latest`, {
+  const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
     next: { revalidate: 60 },
   });
 
@@ -16,7 +16,7 @@ async function page({ params }) {
   const latestPost = await latestdata.response.results;
 
   //  ..................................Child..........................
-  const childRes = await fetch(`${END_POINT}/child`, {
+  const childRes = await fetch(`${process.env.END_POINT}/child`, {
     next: { revalidate: 60 },
   });
 
@@ -24,7 +24,7 @@ async function page({ params }) {
   const childPosts = await childdata.response.results;
 
   //  ..................................OldPosts..........................
-  const oldpostsRes = await fetch(`${END_POINT}/oldposts`, {
+  const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
     next: { revalidate: 60 },
   });
 
@@ -32,7 +32,7 @@ async function page({ params }) {
   const oldPosts = await oldpostsdata.response.results;
 
   // ...............................------................................
-  const cat = await fetch(`${END_POINT}/category/${params.slug}`, {
+  const cat = await fetch(`${process.env.END_POINT}/category/${params.slug}`, {
     next: { revalidate: 60 },
   });
   return (

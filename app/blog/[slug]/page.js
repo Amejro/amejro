@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-const { END_POINT, HOST_URL } = process.env;
+// const { END_POINT, HOST_URL } = process.env;
 export async function generateMetadata({ params }) {
-  const result = await fetch(`${END_POINT}`, { next: { revalidate: 60 } }).then(
-    (res) => res.json()
-  );
+  const result = await fetch(`${process.env.END_POINT}`, {
+    next: { revalidate: 60 },
+  }).then((res) => res.json());
 
   const posts = await result.response.results;
   const blog_post = await posts?.find(
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: title.rich_text[0]?.plain_text,
       description: description.rich_text[0]?.plain_text,
-      url: `${HOST_URL}/blog/${slug.rich_text[0].plain_text}`,
+      url: `${process.env.HOST_URL}/blog/${slug.rich_text[0].plain_text}`,
       siteName: "Amejro",
       // publishedTime: "2023-01-01T00:00:00.000Z",
       authors: ["Amedzro Emmanuel"],
@@ -63,7 +63,9 @@ export async function generateMetadata({ params }) {
 }
 
 async function page({ params }) {
-  const result = await fetch(`${END_POINT}`).then((res) => res.json());
+  const result = await fetch(`${process.env.END_POINT}`).then((res) =>
+    res.json()
+  );
 
   const posts = await result.response.results;
   const blog_post = await posts?.find(
