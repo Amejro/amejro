@@ -1,18 +1,23 @@
+import { useNotion } from "@/app/hooks/notion_hooks";
 import Image from "next/image";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 // const { END_POINT, HOST_URL } = process.env;
 export async function generateMetadata({ params }) {
-  const result = await fetch(`${process.env.END_POINT}`, {
-    next: { revalidate: 60 },
-  }).then((res) => res.json());
+  const { getAll } = useNotion(); // eslint-disable-line
 
-  // check if the response was successful
-  if (!result.ok) {
-    throw new Error(`Server responded with status: ${result.status}`);
-  }
+  const result = await getAll();
+  const posts = await result.results;
+  // const result = await fetch(`${process.env.END_POINT}`, {
+  //   next: { revalidate: 60 },
+  // }).then((res) => res.json());
 
-  const posts = await result.response.results;
+  // // check if the response was successful
+  // if (!result.ok) {
+  //   throw new Error(`Server responded with status: ${result.status}`);
+  // }
+
+  // const posts = await result.response.results;
   const blog_post = await posts?.find(
     (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
   );
@@ -68,11 +73,15 @@ export async function generateMetadata({ params }) {
 }
 
 async function page({ params }) {
-  const result = await fetch(`${process.env.END_POINT}`).then((res) =>
-    res.json()
-  );
+  const { getAll } = useNotion(); // eslint-disable-line
+  const result = await getAll();
+  const posts = await result.results;
 
-  const posts = await result.response.results;
+  // const result = await fetch(`${process.env.END_POINT}`).then((res) =>
+  //   res.json()
+  // );
+
+  // const posts = await result.response.results;
   const blog_post = await posts?.find(
     (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
   );
