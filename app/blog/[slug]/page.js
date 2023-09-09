@@ -7,6 +7,11 @@ export async function generateMetadata({ params }) {
     next: { revalidate: 60 },
   }).then((res) => res.json());
 
+  // check if the response was successful
+  if (!result.ok) {
+    throw new Error(`Server responded with status: ${result.status}`);
+  }
+
   const posts = await result.response.results;
   const blog_post = await posts?.find(
     (post) => post.properties.slug.rich_text[0].plain_text === params?.slug

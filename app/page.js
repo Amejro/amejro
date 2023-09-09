@@ -13,6 +13,11 @@ export default async function Home() {
   const res = await fetch(`${process.env.END_POINT}`, {
     next: { revalidate: 60 },
   });
+
+  // check if the response was successful
+  if (!res.ok) {
+    throw new Error(`Server responded with status: ${res.status}`);
+  }
   const data = await res.json();
   const posts = await data.response.results;
 
@@ -20,6 +25,11 @@ export default async function Home() {
   const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
     next: { revalidate: 60 },
   });
+
+  // check if the response was successful
+  if (!latestRes.ok) {
+    throw new Error(`Server responded with status: ${latestRes.status}`);
+  }
 
   const latestdata = await latestRes.json();
   const latestPost = await latestdata.response.results;
@@ -29,6 +39,11 @@ export default async function Home() {
     next: { revalidate: 60 },
   });
 
+  // check if the response was successful
+  if (!childRes.ok) {
+    throw new Error(`Server responded with status: ${childRes.status}`);
+  }
+
   const childdata = await childRes.json();
   const childPosts = await childdata.response.results;
 
@@ -36,6 +51,11 @@ export default async function Home() {
   const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
     next: { revalidate: 60 },
   });
+
+  // check if the response was successful
+  if (!oldpostsRes.ok) {
+    throw new Error(`Server responded with status: ${oldpostsRes.status}`);
+  }
 
   const oldpostsdata = await oldpostsRes.json();
   const oldPosts = await oldpostsdata.response.results;
