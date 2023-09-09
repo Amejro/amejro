@@ -1,3 +1,4 @@
+import { useNotion } from "@/app/hooks/notion_hooks";
 import CategoryCard from "app/components/cards/CategoryCard";
 import HeroCard from "app/components/cards/HeroCard";
 import ListCard from "app/components/cards/ListCard";
@@ -6,50 +7,57 @@ import Link from "next/link";
 const { END_POINT } = process.env;
 
 async function page({ params }) {
+  const { getChild, getLatest, getOldPosts } = useNotion(); // eslint-disable-line
   // ................................Latest.....................
+  const latestRes = await getLatest();
+  const latestPost = await latestRes.results;
 
-  const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
-    next: { revalidate: 60 },
-  });
+  // const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
+  //   next: { revalidate: 60 },
+  // });
 
-  // check if the response was successful
-  if (!latestRes.ok) {
-    throw new Error(`Server responded with status: ${latestRes.status}`);
-  }
+  // // check if the response was successful
+  // if (!latestRes.ok) {
+  //   throw new Error(`Server responded with status: ${latestRes.status}`);
+  // }
 
-  const latestdata = await latestRes.json();
-  const latestPost = await latestdata.response.results;
+  // const latestdata = await latestRes.json();
+  // const latestPost = await latestdata.response.results;
 
   //  ..................................Child..........................
-  const childRes = await fetch(`${process.env.END_POINT}/child`, {
-    next: { revalidate: 60 },
-  });
+  // const childRes = await fetch(`${process.env.END_POINT}/child`, {
+  //   next: { revalidate: 60 },
+  // });
 
-  // check if the response was successful
-  if (!childRes.ok) {
-    throw new Error(`Server responded with status: ${childRes.status}`);
-  }
+  // // check if the response was successful
+  // if (!childRes.ok) {
+  //   throw new Error(`Server responded with status: ${childRes.status}`);
+  // }
 
-  const childdata = await childRes.json();
-  const childPosts = await childdata.response.results;
+  // const childdata = await childRes.json();
+  // const childPosts = await childdata.response.results;
+  const childRes = await getChild();
+  const childPosts = await childRes.results;
 
   //  ..................................OldPosts..........................
-  const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
-    next: { revalidate: 60 },
-  });
+  // const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
+  //   next: { revalidate: 60 },
+  // });
 
-  // check if the response was successful
-  if (!oldpostsRes.ok) {
-    throw new Error(`Server responded with status: ${oldpostsRes.status}`);
-  }
+  // // check if the response was successful
+  // if (!oldpostsRes.ok) {
+  //   throw new Error(`Server responded with status: ${oldpostsRes.status}`);
+  // }
 
-  const oldpostsdata = await oldpostsRes.json();
-  const oldPosts = await oldpostsdata.response.results;
+  // const oldpostsdata = await oldpostsRes.json();
+  // const oldPosts = await oldpostsdata.response.results;
+  const oldpostsRes = await getOldPosts();
+  const oldPosts = await oldpostsRes.results;
 
   // ...............................------................................
-  const cat = await fetch(`${process.env.END_POINT}/category/${params.slug}`, {
-    next: { revalidate: 60 },
-  });
+  // const cat = await fetch(`${process.env.END_POINT}/category/${params.slug}`, {
+  //   next: { revalidate: 60 },
+  // });
   return (
     <div className="h-full">
       <main className=" grid grid-cols-12 max-w-[1140px] lg:mx-auto gap-x-[32px] lg:gap-[32px]  ">

@@ -11,66 +11,20 @@ export const metadata = {
 
 export default async function Home() {
   const { getChild, getLatest, getOldPosts } = useNotion();
-  // ..............................All Posts.....................
-  // const res = await fetch(`${process.env.END_POINT}`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!res.ok) {
-  //   throw new Error(`Server responded with status: ${res.status}`);
-  // }
-  // const data = await res.json();
-  // const posts = await data.response.results;
 
   // ................................Latest.....................
 
   const latestRes = await getLatest();
   const latestPost = await latestRes.results;
 
-  // const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!latestRes.ok) {
-  //   throw new Error(`Server responded with status: ${latestRes.status}`);
-  // }
-
-  // const latestdata = await latestRes.json();
-  // const latestPost = await latestdata.response.results;
-
   //  ..................................Child..........................
 
   const childRes = await getChild();
   const childPosts = await childRes.results;
 
-  // const childRes = await fetch(`${process.env.END_POINT}/child`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!childRes.ok) {
-  //   throw new Error(`Server responded with status: ${childRes.status}`);
-  // }
-
-  // const childdata = await childRes.json();
-  // const childPosts = await childdata.response.results;
-
   //  ..................................OldPosts..........................
   const oldpostsRes = await getOldPosts();
   const oldPosts = await oldpostsRes.results;
-  // const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!oldpostsRes.ok) {
-  //   throw new Error(`Server responded with status: ${oldpostsRes.status}`);
-  // }
-
-  // const oldpostsdata = await oldpostsRes.json();
-  // const oldPosts = await oldpostsdata.response.results;
 
   return (
     <div className="h-full">

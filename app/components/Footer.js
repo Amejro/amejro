@@ -3,17 +3,6 @@ import Amejro from "./logo/Amejro";
 import { useNotion } from "../hooks/notion_hooks";
 
 async function Footer() {
-  // const categoryRes = await fetch(`${process.env.END_POINT}/categories`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // if (!categoryRes.ok) {
-  // //   throw new Error(`Server responded with status: ${categoryRes.status}`);
-  // // }
-
-  // const categorydata = await categoryRes.json();
-  // const categories = await categorydata.response.results;
-
   const { getCategories } = useNotion();
   const categorydata = await getCategories();
   const categories = await categorydata.results;
