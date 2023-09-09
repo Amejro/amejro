@@ -10,7 +10,7 @@ import { notion } from "app/config/notion";
 // const { CATEGORY_DB } = process.env;
 
 export async function GET(req, res) {
-  NextResponse;
+  // NextResponse;
   const response = await notion.databases.query({
     database_id: process.env.CATEGORY_DB,
     filter: {
