@@ -2,8 +2,8 @@ import Link from "next/link";
 import Amejro from "./logo/Amejro";
 
 async function NavBar() {
-  const categoryRes = await fetch("http://localhost:3000/api/categories", {
-    next: { cache: "no-store" },
+  const categoryRes = await fetch(`${process.env.END_POINT}/cateories`, {
+    next: { revalidate: 60 },
   });
 
   const categorydata = await categoryRes.json();
