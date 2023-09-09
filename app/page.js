@@ -5,7 +5,7 @@ import CategoryCard from "./components/cards/CategoryCard";
 import HeroCard from "./components/cards/HeroCard";
 import { useNotion } from "./hooks/notion_hooks";
 
-export const revalidate = 60;
+export const revalidate = 600;
 export const metadata = {
   description: "Read more.",
 };

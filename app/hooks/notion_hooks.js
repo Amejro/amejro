@@ -2,7 +2,7 @@ import { notion } from "../config/notion";
 import { cache } from "react";
 export const revalidate = 60;
 export const useNotion = () => {
-  const getAll = async () => {
+  const getAll = cache(async () => {
     try {
       return await notion.databases.query({
         database_id: process.env.NOTION_DB,
@@ -16,9 +16,9 @@ export const useNotion = () => {
     } catch (e) {
       return [];
     }
-  };
+  });
 
-  const getCategories = async () => {
+  const getCategories = cache(async () => {
     try {
       return await notion.databases.query({
         database_id: process.env.CATEGORY_DB,
@@ -32,9 +32,9 @@ export const useNotion = () => {
     } catch (e) {
       return [];
     }
-  };
+  });
 
-  const getChild = async () => {
+  const getChild = cache(async () => {
     try {
       return await notion.databases.query({
         database_id: process.env.NOTION_DB,
@@ -58,9 +58,9 @@ export const useNotion = () => {
     } catch (e) {
       return [];
     }
-  };
+  });
 
-  const getLatest = async () => {
+  const getLatest = cache(async () => {
     try {
       return await notion.databases.query({
         database_id: process.env.NOTION_DB,
@@ -84,9 +84,9 @@ export const useNotion = () => {
     } catch (e) {
       return [];
     }
-  };
+  });
 
-  const getOldPosts = async () => {
+  const getOldPosts = cache(async () => {
     try {
       return await notion.databases.query({
         database_id: process.env.NOTION_DB,
@@ -116,7 +116,7 @@ export const useNotion = () => {
     } catch (e) {
       return [];
     }
-  };
+  });
 
   return {
     getAll,

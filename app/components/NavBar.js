@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Amejro from "./logo/Amejro";
 import { useNotion } from "../hooks/notion_hooks";
-export const revalidate = 60;
+export const revalidate = 86000;
 async function NavBar() {
   const { getCategories } = useNotion();
   const categorydata = await getCategories();

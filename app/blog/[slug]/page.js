@@ -1,6 +1,6 @@
 import { useNotion } from "@/app/hooks/notion_hooks";
 import Image from "next/image";
-export const revalidate = 60;
+export const revalidate = 600;
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 // const { END_POINT, HOST_URL } = process.env;
 export async function generateMetadata({ params }) {
