@@ -4,7 +4,7 @@ import HeroCard from "app/components/cards/HeroCard";
 import ListCard from "app/components/cards/ListCard";
 import Link from "next/link";
 
-const { END_POINT } = process.env;
+export const revalidate = 60;
 
 async function page({ params }) {
   const { getChild, getLatest, getOldPosts } = useNotion(); // eslint-disable-line

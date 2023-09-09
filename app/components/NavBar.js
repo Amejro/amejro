@@ -33,8 +33,8 @@ async function NavBar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {categories.map((category) => (
-                <li key={category.properties.Status.id}>
+              {categories?.map((category) => (
+                <li key={category?.properties.Status.id}>
                   <Link
                     href={`/category/${category.properties.Name.title[0].plain_text}`}
                   >
@@ -50,7 +50,7 @@ async function NavBar() {
         </nav>
         <nav className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <li key={category.properties.Status.id}>
                 <Link
                   href={`/category/${category.properties.Name.title[0].plain_text}`}

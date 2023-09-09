@@ -4,7 +4,8 @@ import ListCard from "./components/cards/ListCard";
 import CategoryCard from "./components/cards/CategoryCard";
 import HeroCard from "./components/cards/HeroCard";
 import { useNotion } from "./hooks/notion_hooks";
-// const { END_POINT } = process.env;
+
+export const revalidate = 60;
 export const metadata = {
   description: "Read more.",
 };

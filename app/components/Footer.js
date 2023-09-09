@@ -1,18 +1,19 @@
 import Link from "next/link";
 import Amejro from "./logo/Amejro";
 import { useNotion } from "../hooks/notion_hooks";
-
+export const revalidate = 60;
 async function Footer() {
   const { getCategories } = useNotion();
   const categorydata = await getCategories();
   const categories = await categorydata.results;
+
   return (
     <>
       <footer className="footer p-10 bg-base-200 text-base-content">
         <nav>
           <header className="footer-title">Categories</header>
-          {categories.map((category) => (
-            <li key={category.properties.Status.id}>
+          {categories?.map((category) => (
+            <li key={category?.properties.Status.id}>
               <Link
                 href={`/category/${category.properties.Name.title[0].plain_text}`}
               >
