@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
+export const revalidate = 600;
 function ListCard({ data }) {
   return (
     <div className=" ">

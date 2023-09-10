@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+export const revalidate = 600;
 function HeroCard({ data }) {
   return (
     <div className="border-b lg:border-0  lg:w-[440px] border-[#e3e3e3]">

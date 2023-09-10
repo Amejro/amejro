@@ -7,11 +7,7 @@ import Link from "next/link";
 export const revalidate = 600;
 
 async function page({ params }) {
-  const { getChild, getLatest, getOldPosts, getPostByCategory } = useNotion(); // eslint-disable-line
-  // ................................Latest.....................
-  const latestRes = await getLatest();
-  const latestPost = await latestRes.results;
-  // console.log(latestPost[0].properties.category.select?.name);
+  const { getPostByCategory } = useNotion(); // eslint-disable-line
 
   // ................................getPostByCategory.....................
   const categoryRes = await getPostByCategory(params.slug);
@@ -19,17 +15,6 @@ async function page({ params }) {
   // console.log(categoryPost[0].properties.publishedAt.created_time);
   //  ..................................Child..........................
 
-  const childRes = await getChild();
-  const childPosts = await childRes.results;
-
-  //  ..................................OldPosts..........................
-  const oldpostsRes = await getOldPosts();
-  const oldPosts = await oldpostsRes.results;
-
-  // ...............................------................................
-  // const cat = await fetch(`${process.env.END_POINT}/category/${params.slug}`, {
-  //   next: { revalidate: 60 },
-  // });
   return (
     <div className="h-full">
       <main className=" grid grid-cols-12 max-w-[1140px] lg:mx-auto gap-x-[32px] lg:gap-[32px]  ">
