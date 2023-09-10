@@ -4,14 +4,17 @@ import Image from "next/image";
 export const revalidate = 600;
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 export async function generateMetadata({ params }) {
-  const { getAll } = useNotion(); // eslint-disable-line
+  const { getPostBySlug } = useNotion(); // eslint-disable-line
 
-  const result = await getAll();
-  const posts = await result.results;
+  const postResult = await getPostBySlug(params?.slug);
+  const blog_post = await postResult.results[0];
 
-  const blog_post = await posts?.find(
-    (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
-  );
+  // const result = await getAll();
+  // const posts = await result.results;
+
+  // const blog_post = await posts?.find(
+  //   (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
+  // );
 
   const { title, description, image, slug, category } = blog_post?.properties;
   const ogImage = `${process.env.HOST_URL}/og?slug=${slug.rich_text[0].plain_text}`;
@@ -71,23 +74,30 @@ export async function generateMetadata({ params }) {
 }
 
 async function page({ params }) {
-  const { getAll } = useNotion(); // eslint-disable-line
-  const result = await getAll();
-  const posts = await result.results;
+  // const { getAll } = useNotion(); // eslint-disable-line
+  // const result = await getAll();
+  // const posts = await result.results;
 
-  const blog_post = await posts?.find(
-    (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
-  );
+  // const blog_post = await posts?.find(
+  //   (post) => post.propertsies.slug.rich_text[0].plain_text === params?.slug
+  // );
+
+  const { getPostBySlug } = useNotion(); // eslint-disable-line
+
+  const postResult = await getPostBySlug(params?.slug);
+  const blog_post = await postResult.results[0];
 
   return (
     <>
       <div className="mx-auto max-w-2xl px-6">
         {/* <h1 className="text-[#2F1C6A] mt-5 text-3xl leading-[120%] font-extrabold">{post.title}</h1> */}
         <div className="aspect-w-3 aspect-h-2 my-5">
-          <img
+          <Image
             className="rounded-lg"
             alt={blog_post.properties.image.files[0]?.name}
             src={blog_post.properties.image.files[0]?.file.url}
+            width={300}
+            height={300}
             // fill
           />
         </div>

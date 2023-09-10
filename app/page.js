@@ -11,21 +11,12 @@ export const metadata = {
 };
 
 export default async function Home() {
-  const { getChild, getLatest, getOldPosts } = useNotion();
+  const { getAll } = useNotion();
 
-  // ................................Latest.....................
+  // ................................All.....................
 
-  const latestRes = await getLatest();
-  const latestPost = await latestRes.results;
-
-  //  ..................................Child..........................
-
-  const childRes = await getChild();
-  const childPosts = await childRes.results;
-
-  //  ..................................OldPosts..........................
-  const oldpostsRes = await getOldPosts();
-  const oldPosts = await oldpostsRes.results;
+  const alltRes = await getAll();
+  const allPost = await alltRes.results;
 
   return (
     <div className="h-full">
@@ -53,39 +44,72 @@ export default async function Home() {
                 </div>
 
                 <div className="lg:flex lg:flex-row">
-                  {latestPost.map((latest) => (
-                    <div key={latest.properties.title.id}>
-                      <Link
-                        href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
-                      >
-                        <HeroCard data={latest} />
-                      </Link>
-                    </div>
-                  ))}
-
-                  <div className="lg:flex flex-col flex-grow lg:ml-4">
-                    {childPosts.map((childPost) => (
-                      <div key={childPost.properties.title.id}>
+                  {allPost
+                    ?.sort((a, b) => {
+                      if (
+                        new Date(a.properties.publishedAt.created_time) >
+                        new Date(b.properties.publishedAt.created_time)
+                      ) {
+                        return -1;
+                      }
+                      return 1;
+                    })
+                    .slice(0, 1)
+                    .map((latest) => (
+                      <div key={latest.properties.slug.rich_text[0].plain_text}>
                         <Link
-                          href={`/blog/${childPost.properties.slug.rich_text[0].plain_text}`}
+                          href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
                         >
-                          <ListCard data={childPost} />
+                          <HeroCard data={latest} />
                         </Link>
                       </div>
                     ))}
+
+                  <div className="lg:flex flex-col flex-grow lg:ml-4">
+                    {allPost
+                      ?.sort((a, b) => {
+                        if (
+                          new Date(a.properties.publishedAt.created_time) >
+                          new Date(b.properties.publishedAt.created_time)
+                        ) {
+                          return -1;
+                        }
+                        return 1;
+                      })
+                      .slice(1, 4)
+                      .map((childPost) => (
+                        <div key={childPost.properties.title.id}>
+                          <Link
+                            href={`/blog/${childPost.properties.slug.rich_text[0].plain_text}`}
+                          >
+                            <ListCard data={childPost} />
+                          </Link>
+                        </div>
+                      ))}
                   </div>
                 </div>
                 {/* old list */}
                 <div className="border-t border-[#e3e3e3] py-5">
-                  {oldPosts.map((oldPost) => (
-                    <div key={oldPost.properties.title.id}>
-                      <Link
-                        href={`/blog/${oldPost.properties.slug.rich_text[0].plain_text}`}
-                      >
-                        <ListCard data={oldPost} />
-                      </Link>
-                    </div>
-                  ))}
+                  {allPost
+                    ?.sort((a, b) => {
+                      if (
+                        new Date(a.properties.publishedAt.created_time) >
+                        new Date(b.properties.publishedAt.created_time)
+                      ) {
+                        return -1;
+                      }
+                      return 1;
+                    })
+                    .slice(4)
+                    .map((oldPost) => (
+                      <div key={oldPost.properties.title.id}>
+                        <Link
+                          href={`/blog/${oldPost.properties.slug.rich_text[0].plain_text}`}
+                        >
+                          <ListCard data={oldPost} />
+                        </Link>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -98,13 +122,13 @@ export default async function Home() {
         <div className="flex flex-col items-center relative w-full col-span-12">
           <section className="grid lg:grid-cols-12 w-full gap-x-[16px] lg:gap-[16px]">
             <div className="lg:col-span-4">
-              <CategoryCard />
+              <CategoryCard cat={"Entertainment"} />
             </div>
             <div className="lg:col-span-4">
-              <CategoryCard />
+              <CategoryCard cat={"Business"} />
             </div>
             <div className="lg:col-span-4">
-              <CategoryCard />
+              <CategoryCard cat={"Politics"} />
             </div>
           </section>
         </div>

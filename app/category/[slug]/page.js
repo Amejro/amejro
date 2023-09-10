@@ -7,50 +7,22 @@ import Link from "next/link";
 export const revalidate = 600;
 
 async function page({ params }) {
-  const { getChild, getLatest, getOldPosts } = useNotion(); // eslint-disable-line
+  const { getChild, getLatest, getOldPosts, getPostByCategory } = useNotion(); // eslint-disable-line
   // ................................Latest.....................
   const latestRes = await getLatest();
   const latestPost = await latestRes.results;
+  // console.log(latestPost[0].properties.category.select?.name);
 
-  // const latestRes = await fetch(`${process.env.END_POINT}/latest`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!latestRes.ok) {
-  //   throw new Error(`Server responded with status: ${latestRes.status}`);
-  // }
-
-  // const latestdata = await latestRes.json();
-  // const latestPost = await latestdata.response.results;
-
+  // ................................getPostByCategory.....................
+  const categoryRes = await getPostByCategory(params.slug);
+  const categoryPost = await categoryRes.results;
+  // console.log(categoryPost[0].properties.publishedAt.created_time);
   //  ..................................Child..........................
-  // const childRes = await fetch(`${process.env.END_POINT}/child`, {
-  //   next: { revalidate: 60 },
-  // });
 
-  // // check if the response was successful
-  // if (!childRes.ok) {
-  //   throw new Error(`Server responded with status: ${childRes.status}`);
-  // }
-
-  // const childdata = await childRes.json();
-  // const childPosts = await childdata.response.results;
   const childRes = await getChild();
   const childPosts = await childRes.results;
 
   //  ..................................OldPosts..........................
-  // const oldpostsRes = await fetch(`${process.env.END_POINT}/oldposts`, {
-  //   next: { revalidate: 60 },
-  // });
-
-  // // check if the response was successful
-  // if (!oldpostsRes.ok) {
-  //   throw new Error(`Server responded with status: ${oldpostsRes.status}`);
-  // }
-
-  // const oldpostsdata = await oldpostsRes.json();
-  // const oldPosts = await oldpostsdata.response.results;
   const oldpostsRes = await getOldPosts();
   const oldPosts = await oldpostsRes.results;
 
@@ -86,39 +58,72 @@ async function page({ params }) {
                 </div>
 
                 <div className="lg:flex lg:flex-row">
-                  {latestPost.map((latest) => (
-                    <div key={latest.properties.title.id}>
-                      <Link
-                        href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
-                      >
-                        <HeroCard data={latest} />
-                      </Link>
-                    </div>
-                  ))}
-
-                  <div className="lg:flex flex-col flex-grow lg:ml-4">
-                    {childPosts.map((childPost) => (
-                      <div key={childPost.properties.title.id}>
+                  {categoryPost
+                    ?.sort((a, b) => {
+                      if (
+                        new Date(a.properties.publishedAt.created_time) >
+                        new Date(b.properties.publishedAt.created_time)
+                      ) {
+                        return -1;
+                      }
+                      return 1;
+                    })
+                    .slice(0, 1)
+                    .map((latest) => (
+                      <div key={latest.properties.title.id}>
                         <Link
-                          href={`/blog/${childPost.properties.slug.rich_text[0].plain_text}`}
+                          href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
                         >
-                          <ListCard data={childPost} />
+                          <HeroCard data={latest} />
                         </Link>
                       </div>
                     ))}
+
+                  <div className="lg:flex flex-col flex-grow lg:ml-4">
+                    {categoryPost
+                      ?.sort((a, b) => {
+                        if (
+                          new Date(a.properties.publishedAt.created_time) >
+                          new Date(b.properties.publishedAt.created_time)
+                        ) {
+                          return -1;
+                        }
+                        return 1;
+                      })
+                      .slice(1, 4)
+                      .map((post) => (
+                        <div key={post.properties.title.id}>
+                          <Link
+                            href={`/blog/${post.properties.slug.rich_text[0].plain_text}`}
+                          >
+                            <ListCard data={post} />
+                          </Link>
+                        </div>
+                      ))}
                   </div>
                 </div>
                 {/* old list */}
                 <div className="border-t border-[#e3e3e3] py-5">
-                  {oldPosts.map((oldPost) => (
-                    <div key={oldPost.properties.title.id}>
-                      <Link
-                        href={`/blog/${oldPost.properties.slug.rich_text[0].plain_text}`}
-                      >
-                        <ListCard data={oldPost} />
-                      </Link>
-                    </div>
-                  ))}
+                  {categoryPost
+                    ?.sort((a, b) => {
+                      if (
+                        new Date(a.properties.publishedAt.created_time) >
+                        new Date(b.properties.publishedAt.created_time)
+                      ) {
+                        return -1;
+                      }
+                      return 1;
+                    })
+                    .slice(4)
+                    .map((post) => (
+                      <div key={post.properties.slug.rich_text[0].plain_text}>
+                        <Link
+                          href={`/blog/${post.properties.slug.rich_text[0].plain_text}`}
+                        >
+                          <ListCard data={post} />
+                        </Link>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

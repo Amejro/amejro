@@ -118,11 +118,65 @@ export const useNotion = () => {
     }
   });
 
+  const getPostByCategory = cache(async (catID) => {
+    try {
+      return await notion.databases.query({
+        database_id: process.env.NOTION_DB,
+        filter: {
+          and: [
+            {
+              property: "Status",
+              select: {
+                equals: "Live",
+              },
+            },
+            {
+              property: "category",
+              select: {
+                equals: `${catID}`,
+              },
+            },
+          ],
+        },
+      });
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const getPostBySlug = cache(async (postslug) => {
+    try {
+      return await notion.databases.query({
+        database_id: process.env.NOTION_DB,
+        filter: {
+          and: [
+            {
+              property: "Status",
+              select: {
+                equals: "Live",
+              },
+            },
+            {
+              property: "slug",
+              rich_text: {
+                equals: `${postslug}`,
+              },
+            },
+          ],
+        },
+      });
+    } catch (e) {
+      return [];
+    }
+  });
+
   return {
     getAll,
     getCategories,
     getChild,
     getLatest,
     getOldPosts,
+    getPostByCategory,
+    getPostBySlug,
   };
 };
