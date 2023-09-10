@@ -1,3 +1,5 @@
+import CategoryCard from "@/app/components/cards/CategoryCard";
+import RelatedCard from "@/app/components/cards/RelatedCard";
 import SocialShare from "@/app/components/share/SocialShare";
 import { useNotion } from "@/app/hooks/notion_hooks";
 import Image from "next/image";
@@ -9,19 +11,9 @@ export async function generateMetadata({ params }) {
   const postResult = await getPostBySlug(params?.slug);
   const blog_post = await postResult.results[0];
 
-  // const result = await getAll();
-  // const posts = await result.results;
-
-  // const blog_post = await posts?.find(
-  //   (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
-  // );
-
-  const { title, description, image, slug, category } = blog_post?.properties;
+  const { title, description, image, slug, category, publishedAt } =
+    blog_post?.properties;
   const ogImage = `${process.env.HOST_URL}/og?slug=${slug.rich_text[0].plain_text}`;
-
-  // const ogImage = image
-  //   ? `https://leerob.io${image}`
-  //   : `https://leerob.io/og?title=${title}`;
 
   return {
     title: title.rich_text[0]?.plain_text,
@@ -32,7 +24,7 @@ export async function generateMetadata({ params }) {
       description: description.rich_text[0]?.plain_text,
       url: `${process.env.HOST_URL}/blog/${slug.rich_text[0].plain_text}`,
       siteName: "Amejro",
-      // publishedTime: "2023-01-01T00:00:00.000Z",
+      publishedTime: publishedAt?.created_time,
       authors: ["Amedzro Emmanuel"],
       images: [
         {
@@ -56,17 +48,16 @@ export async function generateMetadata({ params }) {
       description: description.rich_text[0]?.plain_text,
       images: [
         {
-          // url: image.files[0]?.file.url,
           url: ogImage,
           width: 800,
           height: 600,
+          alt: title.rich_text[0]?.plain_text,
         },
         {
-          // url: image.files[0]?.file.url,
           url: ogImage,
           width: 1800,
           height: 1600,
-          alt: "My custom alt",
+          alt: title.rich_text[0]?.plain_text,
         },
       ],
     },
@@ -74,14 +65,6 @@ export async function generateMetadata({ params }) {
 }
 
 async function page({ params }) {
-  // const { getAll } = useNotion(); // eslint-disable-line
-  // const result = await getAll();
-  // const posts = await result.results;
-
-  // const blog_post = await posts?.find(
-  //   (post) => post.propertsies.slug.rich_text[0].plain_text === params?.slug
-  // );
-
   const { getPostBySlug } = useNotion(); // eslint-disable-line
 
   const postResult = await getPostBySlug(params?.slug);
@@ -89,8 +72,7 @@ async function page({ params }) {
 
   return (
     <>
-      <div className="mx-auto max-w-2xl px-6">
-        {/* <h1 className="text-[#2F1C6A] mt-5 text-3xl leading-[120%] font-extrabold">{post.title}</h1> */}
+      <div className="mx-auto max-w-2xl px-6 pb-5">
         <div className="aspect-w-3 aspect-h-2 my-5">
           <Image
             className="rounded-lg"
@@ -101,13 +83,16 @@ async function page({ params }) {
             // fill
           />
         </div>
+        <p className="text-xs text-[#8e9299] text-right pr-5">
+          <span>Published:</span>{" "}
+          {blog_post?.properties.publishedAt.created_time.split("T")[0]}
+        </p>
         <SocialShare
           urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
-          Title={blog_post.properties.title.rich_text[0]?.plain_text}
+          Title={blog_post?.properties.title.rich_text[0]?.plain_text}
         />
-        {/* <h3>{post?.subtitle}</h3> */}
         <article
-          className="prose prose-stone prose-heading:text-[#2F1C6A] prose-p:text-[#36344D]
+          className="pb-10 prose  prose-stone prose-heading:text-[#2F1C6A] prose-p:text-[#36344D]
     prose-p:font-[400px] prose-a:text-[#673DE6] prose-a:no-underline hover:prose-a:underline
     "
         >
@@ -115,8 +100,13 @@ async function page({ params }) {
             {blog_post?.properties.content.rich_text[0].plain_text}
           </ReactMarkdown>
         </article>
+        <SocialShare
+          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
+          Title={blog_post.properties.title.rich_text[0]?.plain_text}
+        />
       </div>
-      {/* <Related allPosts={allPosts}/> */}
+
+      <RelatedCard cat={blog_post?.properties.category.select?.name} />
     </>
   );
 }
