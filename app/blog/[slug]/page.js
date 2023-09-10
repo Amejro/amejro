@@ -1,28 +1,24 @@
+import SocialShare from "@/app/components/share/SocialShare";
 import { useNotion } from "@/app/hooks/notion_hooks";
 import Image from "next/image";
 export const revalidate = 600;
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-// const { END_POINT, HOST_URL } = process.env;
 export async function generateMetadata({ params }) {
   const { getAll } = useNotion(); // eslint-disable-line
 
   const result = await getAll();
   const posts = await result.results;
-  // const result = await fetch(`${process.env.END_POINT}`, {
-  //   next: { revalidate: 60 },
-  // }).then((res) => res.json());
 
-  // // check if the response was successful
-  // if (!result.ok) {
-  //   throw new Error(`Server responded with status: ${result.status}`);
-  // }
-
-  // const posts = await result.response.results;
   const blog_post = await posts?.find(
     (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
   );
 
   const { title, description, image, slug, category } = blog_post?.properties;
+  const ogImage = `${process.env.HOST_URL}/og?slug=${slug.rich_text[0].plain_text}`;
+
+  // const ogImage = image
+  //   ? `https://leerob.io${image}`
+  //   : `https://leerob.io/og?title=${title}`;
 
   return {
     title: title.rich_text[0]?.plain_text,
@@ -57,12 +53,14 @@ export async function generateMetadata({ params }) {
       description: description.rich_text[0]?.plain_text,
       images: [
         {
-          url: image.files[0]?.file.url,
+          // url: image.files[0]?.file.url,
+          url: ogImage,
           width: 800,
           height: 600,
         },
         {
-          url: image.files[0]?.file.url,
+          // url: image.files[0]?.file.url,
+          url: ogImage,
           width: 1800,
           height: 1600,
           alt: "My custom alt",
@@ -77,11 +75,6 @@ async function page({ params }) {
   const result = await getAll();
   const posts = await result.results;
 
-  // const result = await fetch(`${process.env.END_POINT}`).then((res) =>
-  //   res.json()
-  // );
-
-  // const posts = await result.response.results;
   const blog_post = await posts?.find(
     (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
   );
@@ -98,7 +91,10 @@ async function page({ params }) {
             // fill
           />
         </div>
-
+        <SocialShare
+          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
+          Title={blog_post.properties.title.rich_text[0]?.plain_text}
+        />
         {/* <h3>{post?.subtitle}</h3> */}
         <article
           className="prose prose-stone prose-heading:text-[#2F1C6A] prose-p:text-[#36344D]

@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 function HeroCard({ data }) {
   return (
     <div className="border-b lg:border-0  lg:w-[440px] border-[#e3e3e3]">
@@ -8,8 +6,10 @@ function HeroCard({ data }) {
         <figure>
           <img
             className="w-full h-[168px] bg-slate-400"
-            src="https://images.unsplash.com/photo-1693418161641-99928097b5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80"
-            alt="Shoes"
+            alt={data?.properties.image.files[0]?.name}
+            src={data?.properties.image.files[0]?.file.url}
+            // src="https://images.unsplash.com/photo-1693418161641-99928097b5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80"
+            // alt="Shoes"
           />
         </figure>
         <div className="card-body">
