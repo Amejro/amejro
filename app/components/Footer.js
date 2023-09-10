@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Amejro from "./logo/Amejro";
 import { useNotion } from "../hooks/notion_hooks";
-export const revalidate = 86000;
+export const revalidate = 600;
 async function Footer() {
   const { getCategories } = useNotion();
   const categorydata = await getCategories();
