@@ -36,7 +36,7 @@ export async function GET(req) {
     }
   });
   const data = await getPostBySlug();
-  //   console.log(data.results[0].properties.title.rich_text[0].text.content);
+  // console.log(data.results[0].properties.title.rich_text[0].text.content);
 
   //   const font = fetch(
   //     new URL("../../public/fonts/kaisei-tokumin-bold.ttf", import.meta.url)
@@ -73,32 +73,8 @@ export async function GET(req) {
               width: "100vw",
             }}
             src={data.results[0].properties.image.files[0]?.file.url}
-            alt="hfju"
+            alt={data.results[0].properties.title.rich_text[0].text.content}
           />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            height: "100vh",
-            width: "100vw",
-            backgroundColor: "#00000070",
-            display: "flex",
-          }}
-        ></div>
-
-        <div
-          style={{
-            position: "absolute",
-            display: "flex",
-            fontSize: 50,
-            fontStyle: "normal",
-            color: "yellow",
-            width: "60vw",
-            lineHeight: 0.8,
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {data.results[0].properties.title.rich_text[0].text.content}
         </div>
       </div>
     ),

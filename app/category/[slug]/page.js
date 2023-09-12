@@ -57,7 +57,7 @@ async function page({ params }) {
                     .map((latest) => (
                       <div key={latest.properties.title.id}>
                         <Link
-                          href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
+                          href={`/category/${params.slug}/article/${latest.properties.slug.rich_text[0].plain_text}`}
                         >
                           <HeroCard data={latest} />
                         </Link>
@@ -79,7 +79,7 @@ async function page({ params }) {
                       .map((post) => (
                         <div key={post.properties.title.id}>
                           <Link
-                            href={`/blog/${post.properties.slug.rich_text[0].plain_text}`}
+                            href={`/category/${params.slug}/article/${post.properties.slug.rich_text[0].plain_text}`}
                           >
                             <ListCard data={post} />
                           </Link>
@@ -103,7 +103,7 @@ async function page({ params }) {
                     .map((post) => (
                       <div key={post.properties.slug.rich_text[0].plain_text}>
                         <Link
-                          href={`/blog/${post.properties.slug.rich_text[0].plain_text}`}
+                          href={`/category/${params.slug}/article/${post.properties.slug.rich_text[0].plain_text}`}
                         >
                           <ListCard data={post} />
                         </Link>

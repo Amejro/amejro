@@ -8,12 +8,12 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 export async function generateMetadata({ params }) {
   const { getPostBySlug } = useNotion(); // eslint-disable-line
 
-  const postResult = await getPostBySlug(params?.slug);
+  const postResult = await getPostBySlug(params?.cat);
   const blog_post = await postResult.results[0];
 
   const { title, description, image, slug, category, publishedAt } =
     blog_post?.properties;
-  const ogImage = `${process.env.HOST_URL}/og?slug=${slug.rich_text[0].plain_text}`;
+  const ogImage = `${process.env.HOST_URL}/og?cat=${slug.rich_text[0].plain_text}`;
 
   return {
     title: title.rich_text[0]?.plain_text,
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: title.rich_text[0]?.plain_text,
       description: description.rich_text[0]?.plain_text,
-      url: `${process.env.HOST_URL}/blog/${slug.rich_text[0].plain_text}`,
+      url: `${process.env.HOST_URL}/article/${slug.rich_text[0].plain_text}`,
       siteName: "Amejro",
       publishedTime: publishedAt?.created_time,
       authors: ["Amedzro Emmanuel"],
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }) {
 async function page({ params }) {
   const { getPostBySlug } = useNotion(); // eslint-disable-line
 
-  const postResult = await getPostBySlug(params?.slug);
+  const postResult = await getPostBySlug(params?.cat);
   const blog_post = await postResult.results[0];
 
   return (
@@ -88,7 +88,7 @@ async function page({ params }) {
           {blog_post?.properties.publishedAt.created_time.split("T")[0]}
         </p>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
+          urlLink={`${process.env.HOST_URL}/article/${blog_post.properties.slug.rich_text[0].plain_text}`}
           Title={blog_post?.properties.title.rich_text[0]?.plain_text}
         />
         <article
@@ -101,7 +101,7 @@ async function page({ params }) {
           </ReactMarkdown>
         </article>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
+          urlLink={`${process.env.HOST_URL}/article/${blog_post.properties.slug.rich_text[0].plain_text}`}
           Title={blog_post.properties.title.rich_text[0]?.plain_text}
         />
       </div>
