@@ -101,7 +101,7 @@ async function page({ params }) {
           </ReactMarkdown>
         </article>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
+          urlLink={`${process.env.HOST_URL}/blog/${category.select?.name}/${blog_post.properties.slug.rich_text[0].plain_text}`}
           Title={blog_post.properties.title.rich_text[0]?.plain_text}
         />
       </div>
