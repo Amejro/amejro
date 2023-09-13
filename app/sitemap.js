@@ -6,15 +6,16 @@ export default async function sitemap() {
   const allPosts = await result.results;
 
   const categorydata = await getCategories();
-  const categories = await categorydata.results;
+  // const categories = await categorydata.results;
+  // console.log(allPosts[0].properties.category.select.name);
 
   const posts = allPosts.map((post) => ({
     url: `https://amejro.xyz/blog/${post.properties.slug.rich_text[0].plain_text}`,
     lastModified: post.publishedAt,
   }));
 
-  const allCategory = categories.map((post) => ({
-    url: `https://amejro.xyz//category/${category.properties.Name.title[0].plain_text}/article/${post.properties.slug.rich_text[0].plain_text}`,
+  const allCategory = allPosts.map((post) => ({
+    url: `https://amejro.xyz//category/${post.properties.category.select.name}/article/${post.properties.slug.rich_text[0].plain_text}`,
     lastModified: post.publishedAt,
   }));
 
