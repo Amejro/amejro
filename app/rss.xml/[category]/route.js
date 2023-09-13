@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
     description: `Provide latest ${params?.category} news across the glob`,
     feed_url: `https://amejro.xyz/rss.xml/${params?.category}`,
     site_url: `https://amejro.xyz`,
-    copyright: `${new Date().getFullYear()} Amejro`,
+    copyright: `copyright &copy; ${new Date().getFullYear()} Amejro. All rights reserved`,
     // image_url: properties.image.files[0]?.file.url,
     language: "en",
     categories: [],
