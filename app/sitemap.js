@@ -15,7 +15,7 @@ export default async function sitemap() {
   }));
 
   const allCategory = allPosts.map((post) => ({
-    url: `https://amejro.xyz//category/${post.properties.category.select.name}/article/${post.properties.slug.rich_text[0].plain_text}`,
+    url: `https://amejro.xyz/category/${post.properties.category.select.name}/article/${post.properties.slug.rich_text[0].plain_text}`,
     lastModified: post.publishedAt,
   }));
 
