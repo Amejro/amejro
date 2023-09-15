@@ -1,5 +1,9 @@
 import Image from "next/image";
+import { Suspense } from "react";
+import ImageSkeleton from "../skeletons/ImageSkeleton";
 export const revalidate = 600;
+import dynamic from "next/dynamic";
+
 function HeroCard({ data }) {
   return (
     <div className="border-b lg:border-0  lg:w-[440px] border-[#e3e3e3]">
@@ -8,12 +12,13 @@ function HeroCard({ data }) {
         <figure>
           <Image
             className="w-full h-[250px] bg-slate-400"
-            alt={data?.properties.image.files[0]?.name}
-            src={data?.properties.image.files[0]?.file.url}
+            alt={data.properties.image.files[0].name}
+            src={data.properties.image.files[0].file.url}
             width={300}
             height={250}
           />
         </figure>
+
         <div className="card-body">
           <h2 className="card-title">
             {data?.properties.title.rich_text[0].plain_text}

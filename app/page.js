@@ -15,8 +15,8 @@ export default async function Home() {
 
   // ................................All.....................
 
-  const alltRes = await getAll();
-  const allPost = await alltRes.results;
+  const allRes = await getAll();
+  const allPost = await allRes.results;
 
   return (
     <div className="h-full">
