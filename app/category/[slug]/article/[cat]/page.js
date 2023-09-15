@@ -6,10 +6,17 @@ import Image from "next/image";
 export const revalidate = 600;
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 export async function generateMetadata({ params }) {
-  const { getPostBySlug } = useNotion(); // eslint-disable-line
+  const { getAll } = useNotion(); // eslint-disable-line
 
-  const postResult = await getPostBySlug(params?.cat);
-  const blog_post = await postResult.results[0];
+  // const postResult = await getPostBySlug(params?.cat);
+  // const blog_post = await postResult.results[0];
+
+  const allRes = await getAll();
+  const allPost = await allRes.results;
+
+  const blog_post = await allPost.find(
+    (post) => post.properties.slug.rich_text[0].plain_text === params?.cat
+  );
 
   const { title, description, image, slug, category, publishedAt } =
     blog_post?.properties;
@@ -65,10 +72,14 @@ export async function generateMetadata({ params }) {
 }
 
 async function page({ params }) {
-  const { getPostBySlug } = useNotion(); // eslint-disable-line
+  const { getAll } = useNotion(); // eslint-disable-line
 
-  const postResult = await getPostBySlug(params?.cat);
-  const blog_post = await postResult.results[0];
+  const allRes = await getAll();
+  const allPost = await allRes.results;
+
+  const blog_post = await allPost.find(
+    (post) => post.properties.slug.rich_text[0].plain_text === params?.cat
+  );
 
   return (
     <>
