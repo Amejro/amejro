@@ -5,18 +5,20 @@ import CategoryCard from "./components/cards/CategoryCard";
 import HeroCard from "./components/cards/HeroCard";
 import { useNotion } from "./hooks/notion_hooks";
 
-export const revalidate = 600;
+// export const revalidate = 600;
 export const metadata = {
   description: "Read more.",
 };
 
 export default async function Home() {
   const { getAll } = useNotion();
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/posts`);
+  const data = await res.json();
 
   // ................................All.....................
 
-  const allRes = await getAll();
-  const allPost = await allRes.results;
+  // const allRes = await getAll();
+  // const allPost = await allRes.results;
 
   return (
     <div className="h-full">
@@ -44,7 +46,23 @@ export default async function Home() {
                 </div>
 
                 <div className="lg:flex lg:flex-row">
-                  {allPost
+                  {data.docs
+                    ?.sort((a, b) => {
+                      if (new Date(a.createdAt) > new Date(b.createdAt)) {
+                        return -1;
+                      }
+                      return 1;
+                    })
+                    .slice(0, 1)
+                    .map((latest) => (
+                      <div key={latest.id}>
+                        <Link href={`/blog/${latest.slug}`}>
+                          <HeroCard data={latest} />
+                        </Link>
+                      </div>
+                    ))}
+
+                  {/* {allPost
                     ?.sort((a, b) => {
                       if (
                         new Date(a.properties.publishedAt.created_time) >
@@ -63,25 +81,20 @@ export default async function Home() {
                           <HeroCard data={latest} />
                         </Link>
                       </div>
-                    ))}
+                    ))} */}
 
                   <div className="lg:flex flex-col flex-grow lg:ml-4">
-                    {allPost
+                    {data.docs
                       ?.sort((a, b) => {
-                        if (
-                          new Date(a.properties.publishedAt.created_time) >
-                          new Date(b.properties.publishedAt.created_time)
-                        ) {
+                        if (new Date(a.createdAt) > new Date(b.createdAt)) {
                           return -1;
                         }
                         return 1;
                       })
                       .slice(1, 4)
                       .map((childPost) => (
-                        <div key={childPost.properties.title.id}>
-                          <Link
-                            href={`/blog/${childPost.properties.slug.rich_text[0].plain_text}`}
-                          >
+                        <div key={childPost.id}>
+                          <Link href={`/blog/${childPost.slug}`}>
                             <ListCard data={childPost} />
                           </Link>
                         </div>
@@ -90,22 +103,17 @@ export default async function Home() {
                 </div>
                 {/* old list */}
                 <div className="border-t border-[#e3e3e3] py-5">
-                  {allPost
+                  {data.docs
                     ?.sort((a, b) => {
-                      if (
-                        new Date(a.properties.publishedAt.created_time) >
-                        new Date(b.properties.publishedAt.created_time)
-                      ) {
+                      if (new Date(a.createdAt) > new Date(b.createdAt)) {
                         return -1;
                       }
                       return 1;
                     })
                     .slice(4)
                     .map((oldPost) => (
-                      <div key={oldPost.properties.title.id}>
-                        <Link
-                          href={`/blog/${oldPost.properties.slug.rich_text[0].plain_text}`}
-                        >
+                      <div key={oldPost.id}>
+                        <Link href={`/blog/${oldPost.slug}`}>
                           <ListCard data={oldPost} />
                         </Link>
                       </div>

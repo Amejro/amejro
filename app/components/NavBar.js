@@ -1,11 +1,15 @@
 import Link from "next/link";
 import Amejro from "./logo/Amejro";
 import { useNotion } from "../hooks/notion_hooks";
-export const revalidate = 600;
+// export const revalidate = 600;
 async function NavBar() {
-  const { getCategories } = useNotion();
-  const categorydata = await getCategories();
-  const categories = await categorydata.results;
+  // const { getCategories } = useNotion();
+  // const categorydata = await getCategories();
+  // const categories = await categorydata.results;
+
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/globals/nav`);
+  const data = await res.json();
+  // console.log(data);
 
   return (
     <div>
@@ -33,15 +37,23 @@ async function NavBar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {categories?.map((category) => (
+              {data.items?.map((category) => (
+                <li key={category?.id}>
+                  <Link href={`/category/${category.page}`}>
+                    {category.page}
+                  </Link>
+                </li>
+              ))}
+              {/* {categories?.map((category) => (
                 <li key={category?.properties.Status.id}>
                   <Link
                     href={`/category/${category.properties.Name.title[0].plain_text}`}
                   >
                     {category.properties.Name.title[0].plain_text}
+                    
                   </Link>
                 </li>
-              ))}
+              ))} */}
             </ul>
           </div>
           <Link href={"/"} className="btn btn-ghost normal-case text-xl">
@@ -50,7 +62,13 @@ async function NavBar() {
         </nav>
         <nav className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {categories?.map((category) => (
+            {data.items?.map((category) => (
+              <li key={category?.id}>
+                <Link href={`/category/${category.page}`}>{category.page}</Link>
+              </li>
+            ))}
+
+            {/* {categories?.map((category) => (
               <li key={category.properties.Status.id}>
                 <Link
                   href={`/category/${category.properties.Name.title[0].plain_text}`}
@@ -58,7 +76,7 @@ async function NavBar() {
                   {category.properties.Name.title[0].plain_text}
                 </Link>
               </li>
-            ))}
+            ))} */}
           </ul>
         </nav>
       </div>

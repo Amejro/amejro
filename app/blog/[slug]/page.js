@@ -1,5 +1,6 @@
 import CategoryCard from "@/app/components/cards/CategoryCard";
 import RelatedCard from "@/app/components/cards/RelatedCard";
+import { serialize } from "@/app/components/serialize/NewRichTextParser";
 import SocialShare from "@/app/components/share/SocialShare";
 import { useNotion } from "@/app/hooks/notion_hooks";
 import Image from "next/image";
@@ -7,9 +8,6 @@ export const revalidate = 600;
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 export async function generateMetadata({ params }) {
   const { getAll } = useNotion(); // eslint-disable-line
-
-  // const postResult = await getPostBySlug(params?.slug);
-  // const blog_post = await postResult.results[0];
 
   const allRes = await getAll();
   const allPost = await allRes.results;
@@ -74,53 +72,54 @@ export async function generateMetadata({ params }) {
 async function page({ params }) {
   const { getAll } = useNotion(); // eslint-disable-line
 
-  // const postResult = await getPostBySlug(params?.slug);
-  // const blog_post = await postResult.results[0];
-
   const allRes = await getAll();
   const allPost = await allRes.results;
 
-  const blog_post = await allPost.find(
-    (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
-  );
+  // const blog_post = await allPost.find(
+  //   (post) => post.properties.slug.rich_text[0].plain_text === params?.slug
+  // );
 
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/posts`);
+  const data = await res.json();
+
+  const blog_post = await data?.docs.find((post) => post.slug === params?.slug);
+  const htmlContent = serialize(blog_post.content);
+  // console.log(blog_post);
+  // console.log(blog_post.content.jsonContent.root.children);
   return (
     <>
       <div className="mx-auto max-w-2xl px-6 pb-5">
         <div className="aspect-w-3 aspect-h-2 my-5">
           <Image
             className="rounded-lg"
-            alt={blog_post.properties.image.files[0]?.name}
-            src={blog_post.properties.image.files[0]?.file.url}
+            alt={blog_post?.title}
+            src={blog_post?.Image?.url}
             width={300}
             height={300}
             // fill
           />
         </div>
         <p className="text-xs text-[#8e9299] text-right pr-5">
-          <span>Published:</span>{" "}
-          {blog_post?.properties.publishedAt.created_time.split("T")[0]}
+          <span>Published:</span> {blog_post?.updatedAt.split("T")[0]}
         </p>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
-          Title={blog_post?.properties.title.rich_text[0]?.plain_text}
+          urlLink={`${process.env.HOST_URL}/blog/${blog_post?.slug}`}
+          Title={blog_post?.title}
         />
         <article
           className="pb-10 prose  prose-stone prose-heading:text-[#2F1C6A] prose-p:text-[#36344D]
     prose-p:font-[400px] prose-a:text-[#673DE6] prose-a:no-underline hover:prose-a:underline
     "
         >
-          <ReactMarkdown>
-            {blog_post?.properties.content.rich_text[0].plain_text}
-          </ReactMarkdown>
+          <div>{htmlContent}</div>
         </article>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post.properties.slug.rich_text[0].plain_text}`}
-          Title={blog_post.properties.title.rich_text[0]?.plain_text}
+          urlLink={`${process.env.HOST_URL}/blog/${blog_post?.slug}`}
+          Title={blog_post?.title}
         />
       </div>
 
-      <RelatedCard cat={blog_post?.properties.category.select?.name} />
+      {/* <RelatedCard cat={blog_post?.properties.category.select?.name} /> */}
     </>
   );
 }
