@@ -10,6 +10,7 @@ export async function GET(request, { params }) {
     `${process.env.CMS_END_POINT}/api/categories/${categoryID.id}?depth=2`,
     { next: { revalidate: 120 } }
   );
+
   const Catdata = await Catres.json();
 
   const feed = new RSS({
@@ -27,12 +28,12 @@ export async function GET(request, { params }) {
     managingEditor: "Amedzro Emmanuel",
   });
 
-  Catdata.map((post) => {
+  Catdata?.map((post) => {
     feed.item({
       title: post.title,
       description: post.description,
       guid: post.Image.cloudinary.secure_url,
-      url: `https://amejro.xyz/category/${post.category[0].category}/article/${post.slug}`,
+      url: `https://amejro.xyz/category/${post?.category[0].category}/article/${post?.slug}`,
       categories: [post.category[0].category],
       author: "Amedzro Emmanuel",
       date: post.createdAt,
