@@ -1,6 +1,8 @@
 import RSS from "rss";
 export async function GET(request, { params }) {
-  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`);
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
+    next: { revalidate: 0 },
+  });
   const data = await res.json();
   const categoryID = await data?.docs.find(
     (cat) => cat.category === params?.category
@@ -8,9 +10,8 @@ export async function GET(request, { params }) {
 
   const Catres = await fetch(
     `${process.env.CMS_END_POINT}/api/categories/${categoryID.id}?depth=2`,
-    { next: { revalidate: 120 } }
+    { next: { revalidate: 0 } }
   );
-
   const Catdata = await Catres.json();
 
   const feed = new RSS({
@@ -28,7 +29,7 @@ export async function GET(request, { params }) {
     managingEditor: "Amedzro Emmanuel",
   });
 
-  Catdata?.map((post) => {
+  Catdata.posts.map((post) => {
     feed.item({
       title: post.title,
       description: post.description,
