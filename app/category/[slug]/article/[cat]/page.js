@@ -89,7 +89,7 @@ async function page({ params }) {
           <span>Published:</span> {blog_post?.updatedAt.split("T")[0]}
         </p>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post?.slug}`}
+          urlLink={`${process.env.HOST_URL}/${blog_post.category[0].category}/article/${blog_post.slug}`}
           Title={blog_post?.title}
         />
         <article
@@ -100,7 +100,7 @@ async function page({ params }) {
           <div>{htmlContent}</div>
         </article>
         <SocialShare
-          urlLink={`${process.env.HOST_URL}/blog/${blog_post?.slug}`}
+          urlLink={`${process.env.HOST_URL}/${blog_post.category[0].category}/article/${blog_post.slug}`}
           Title={blog_post?.title}
         />
       </div>
