@@ -1,11 +1,16 @@
-import { useNotion } from "@/app/hooks/notion_hooks";
 import RSS from "rss";
 export async function GET(request, { params }) {
-  const { getPostByCategory } = useNotion(); // eslint-disable-line
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`);
+  const data = await res.json();
+  const categoryID = await data?.docs.find(
+    (cat) => cat.category === params?.category
+  );
 
-  const postResult = await getPostByCategory(params?.category);
-
-  const allCategoryPost = await postResult.results;
+  const Catres = await fetch(
+    `${process.env.CMS_END_POINT}/api/categories/${categoryID.id}?depth=2`,
+    { next: { revalidate: 120 } }
+  );
+  const Catdata = await Catres.json();
 
   const feed = new RSS({
     title: `Get latest ${params?.category} news`,
@@ -22,15 +27,15 @@ export async function GET(request, { params }) {
     managingEditor: "Amedzro Emmanuel",
   });
 
-  allCategoryPost.map((post) => {
+  Catdata.map((post) => {
     feed.item({
-      title: post.properties.title.rich_text[0].plain_text,
-      description: post.properties.description.rich_text[0].plain_text,
-      guid: post.properties.image.files[0]?.file.url,
-      url: `https://amejro.xyz/category/${post.properties.category.select.name}/article/${post.properties.slug.rich_text[0].plain_text}`,
-      categories: [post.properties.category.select.name],
+      title: post.title,
+      description: post.description,
+      guid: post.Image.cloudinary.secure_url,
+      url: `https://amejro.xyz/category/${post.category[0].category}/article/${post.slug}`,
+      categories: [post.category[0].category],
       author: "Amedzro Emmanuel",
-      date: post.properties.publishedAt.created_time,
+      date: post.createdAt,
     });
   });
 

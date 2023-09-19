@@ -1,28 +1,27 @@
-import { useNotion } from "./hooks/notion_hooks";
-export const revalidate = 600;
 export default async function sitemap() {
-  const { getAll, getCategories } = useNotion(); // eslint-disable-line
-  const result = await getAll();
-  const allPosts = await result.results;
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/posts`, {
+    next: { revalidate: 600 },
+  });
+  const data = await res.json();
 
-  const categorydata = await getCategories();
-  // const categories = await categorydata.results;
-  // console.log(allPosts[0].properties.category.select.name);
+  const catRes = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
+    next: { revalidate: 600 },
+  });
+  const catData = await catRes.json();
 
-  const posts = allPosts.map((post) => ({
-    url: `https://amejro.xyz/blog/${post.properties.slug.rich_text[0].plain_text}`,
-    lastModified: post.publishedAt,
+  const allPost = data.docs.map((post) => ({
+    url: `https://amejro.xyz/category/${post.category[0].category}/article/${post.slug}`,
+    lastModified: post.createdAt,
   }));
 
-  const allCategory = allPosts.map((post) => ({
-    url: `https://amejro.xyz/category/${post.properties.category.select.name}/article/${post.properties.slug.rich_text[0].plain_text}`,
-    lastModified: post.publishedAt,
+  const allCategories = catData.docs.map((cat) => ({
+    url: `https://amejro.xyz/category/${cat.category}`,
+    lastModified: cat.createdAt,
   }));
 
   const routes = [
     "",
     "/about",
-    "./blog",
     "./category",
     "/terms-of-service",
     "/privacy_policy",
@@ -31,5 +30,5 @@ export default async function sitemap() {
     lastModified: new Date().toISOString(),
   }));
 
-  return [...routes, ...posts, ...allCategory];
+  return [...routes, ...allPost, ...allCategories];
 }

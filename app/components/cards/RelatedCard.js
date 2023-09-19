@@ -1,10 +1,20 @@
-import { useNotion } from "@/app/hooks/notion_hooks";
 import ListCard from "./ListCard";
 import Link from "next/link";
 async function RelatedCard({ cat }) {
-  const { getPostByCategory } = useNotion();
-  const categoryRes = await getPostByCategory(cat);
-  const categoryPost = await categoryRes.results;
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
+    next: { revalidate: 600 },
+  });
+  const data = await res.json();
+  const categoryID = await data.docs.find(
+    (category) => category.category === cat
+  );
+
+  const Catres = await fetch(
+    `${process.env.CMS_END_POINT}/api/categories/${categoryID?.id}?depth=2`,
+    { next: { revalidate: 600 } }
+  );
+  const Catdata = await Catres.json();
+
   return (
     <>
       <div className="max-w-[1140px] lg:mx-auto py-20">
@@ -15,22 +25,17 @@ async function RelatedCard({ cat }) {
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 relative gap-5">
-            {categoryPost
+            {Catdata?.posts
               ?.sort((a, b) => {
-                if (
-                  new Date(a.properties.publishedAt.created_time) >
-                  new Date(b.properties.publishedAt.created_time)
-                ) {
+                if (new Date(a.createdAt) > new Date(b.createdAt)) {
                   return -1;
                 }
                 return 1;
               })
               .slice(0, 4)
               .map((post) => (
-                <div key={post.properties.title.id}>
-                  <Link
-                    href={`/blog/${post.properties.slug.rich_text[0].plain_text}`}
-                  >
+                <div key={post.id}>
+                  <Link href={`/category/${cat}/article/${post.slug}`}>
                     <ListCard data={post} />
                   </Link>
                   <hr />

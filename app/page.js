@@ -1,24 +1,17 @@
 import Link from "next/link";
-import Image from "next/image";
 import ListCard from "./components/cards/ListCard";
 import CategoryCard from "./components/cards/CategoryCard";
 import HeroCard from "./components/cards/HeroCard";
-import { useNotion } from "./hooks/notion_hooks";
 
-// export const revalidate = 600;
 export const metadata = {
   description: "Read more.",
 };
 
 export default async function Home() {
-  const { getAll } = useNotion();
-  const res = await fetch(`${process.env.CMS_END_POINT}/api/posts`);
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/posts`, {
+    next: { revalidate: 600 },
+  });
   const data = await res.json();
-
-  // ................................All.....................
-
-  // const allRes = await getAll();
-  // const allPost = await allRes.results;
 
   return (
     <div className="h-full">
@@ -56,32 +49,14 @@ export default async function Home() {
                     .slice(0, 1)
                     .map((latest) => (
                       <div key={latest.id}>
-                        <Link href={`/blog/${latest.slug}`}>
-                          <HeroCard data={latest} />
-                        </Link>
-                      </div>
-                    ))}
-
-                  {/* {allPost
-                    ?.sort((a, b) => {
-                      if (
-                        new Date(a.properties.publishedAt.created_time) >
-                        new Date(b.properties.publishedAt.created_time)
-                      ) {
-                        return -1;
-                      }
-                      return 1;
-                    })
-                    .slice(0, 1)
-                    .map((latest) => (
-                      <div key={latest.properties.slug.rich_text[0].plain_text}>
+                        {/* <Link href={`/blog/${latest.slug}`}> */}
                         <Link
-                          href={`/blog/${latest.properties.slug.rich_text[0].plain_text}`}
+                          href={`/category/${latest.category[0].category}/article/${latest.slug}`}
                         >
                           <HeroCard data={latest} />
                         </Link>
                       </div>
-                    ))} */}
+                    ))}
 
                   <div className="lg:flex flex-col flex-grow lg:ml-4">
                     {data.docs
@@ -94,7 +69,9 @@ export default async function Home() {
                       .slice(1, 4)
                       .map((childPost) => (
                         <div key={childPost.id}>
-                          <Link href={`/blog/${childPost.slug}`}>
+                          <Link
+                            href={`/category/${childPost.category[0].category}/article/${childPost.slug}`}
+                          >
                             <ListCard data={childPost} />
                           </Link>
                         </div>
@@ -113,7 +90,9 @@ export default async function Home() {
                     .slice(4)
                     .map((oldPost) => (
                       <div key={oldPost.id}>
-                        <Link href={`/blog/${oldPost.slug}`}>
+                        <Link
+                          href={`/category/${oldPost.category[0].category}/article/${oldPost.slug}`}
+                        >
                           <ListCard data={oldPost} />
                         </Link>
                       </div>

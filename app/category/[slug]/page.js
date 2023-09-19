@@ -1,19 +1,22 @@
-import { useNotion } from "@/app/hooks/notion_hooks";
 import CategoryCard from "app/components/cards/CategoryCard";
 import HeroCard from "app/components/cards/HeroCard";
 import ListCard from "app/components/cards/ListCard";
 import Link from "next/link";
 
-export const revalidate = 600;
-
 async function page({ params }) {
-  const { getPostByCategory } = useNotion(); // eslint-disable-line
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
+    next: { revalidate: 600 },
+  });
+  const data = await res.json();
+  const categoryID = await data.docs.find(
+    (cat) => cat.category === params?.slug
+  );
 
-  // ................................getPostByCategory.....................
-  const categoryRes = await getPostByCategory(params.slug);
-  const categoryPost = await categoryRes.results;
-  // console.log(categoryPost[0].properties.publishedAt.created_time);
-  //  ..................................Child..........................
+  const Catres = await fetch(
+    `${process.env.CMS_END_POINT}/api/categories/${categoryID?.id}?depth=2`,
+    { next: { revalidate: 600 } }
+  );
+  const Catdata = await Catres.json();
 
   return (
     <div className="h-full">
@@ -43,21 +46,18 @@ async function page({ params }) {
                 </div>
 
                 <div className="lg:flex lg:flex-row">
-                  {categoryPost
+                  {Catdata.posts
                     ?.sort((a, b) => {
-                      if (
-                        new Date(a.properties.publishedAt.created_time) >
-                        new Date(b.properties.publishedAt.created_time)
-                      ) {
+                      if (new Date(a.createdAt) > new Date(b.createdAt)) {
                         return -1;
                       }
                       return 1;
                     })
                     .slice(0, 1)
                     .map((latest) => (
-                      <div key={latest.properties.title.id}>
+                      <div key={latest.id}>
                         <Link
-                          href={`/category/${params.slug}/article/${latest.properties.slug.rich_text[0].plain_text}`}
+                          href={`/category/${params.slug}/article/${latest.slug}`}
                         >
                           <HeroCard data={latest} />
                         </Link>
@@ -65,21 +65,18 @@ async function page({ params }) {
                     ))}
 
                   <div className="lg:flex flex-col flex-grow lg:ml-4">
-                    {categoryPost
+                    {Catdata.posts
                       ?.sort((a, b) => {
-                        if (
-                          new Date(a.properties.publishedAt.created_time) >
-                          new Date(b.properties.publishedAt.created_time)
-                        ) {
+                        if (new Date(a.createdAt) > new Date(b.createdAt)) {
                           return -1;
                         }
                         return 1;
                       })
                       .slice(1, 4)
                       .map((post) => (
-                        <div key={post.properties.title.id}>
+                        <div key={post.id}>
                           <Link
-                            href={`/category/${params.slug}/article/${post.properties.slug.rich_text[0].plain_text}`}
+                            href={`/category/${params.slug}/article/${post.slug}`}
                           >
                             <ListCard data={post} />
                           </Link>
@@ -89,21 +86,18 @@ async function page({ params }) {
                 </div>
                 {/* old list */}
                 <div className="border-t border-[#e3e3e3] py-5">
-                  {categoryPost
+                  {Catdata.posts
                     ?.sort((a, b) => {
-                      if (
-                        new Date(a.properties.publishedAt.created_time) >
-                        new Date(b.properties.publishedAt.created_time)
-                      ) {
+                      if (new Date(a.createdAt) > new Date(b.createdAt)) {
                         return -1;
                       }
                       return 1;
                     })
                     .slice(4)
                     .map((post) => (
-                      <div key={post.properties.slug.rich_text[0].plain_text}>
+                      <div key={post.id}>
                         <Link
-                          href={`/category/${params.slug}/article/${post.properties.slug.rich_text[0].plain_text}`}
+                          href={`/category/${params.slug}/article/${post.slug}`}
                         >
                           <ListCard data={post} />
                         </Link>

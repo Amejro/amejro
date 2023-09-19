@@ -10,21 +10,15 @@ export const metadata = {
     template: "%s | Amejro",
   },
   description: "Read more",
-  // openGraph: {
-  //   title: "Amejro",
-  //   description: "Developer, writer, and creator.",
-  //   url: "http://localhost:3000/",
-  //   siteName: "Amejro",
-  //   images: [
-  //     {
-  //       url: "https://leerob.io/og.jpg",
-  //       width: 1920,
-  //       height: 1080,
-  //     },
-  //   ],
-  //   locale: "en-US",
-  //   type: "website",
-  // },
+  openGraph: {
+    title: "Amejro",
+    description: "Descover more",
+    url: "https://amejro.xyz",
+    siteName: "Amejro",
+
+    locale: "en-US",
+    type: "website",
+  },
   robots: {
     index: true,
     follow: true,
@@ -36,10 +30,10 @@ export const metadata = {
       // "max-snippet": -1,
     },
   },
-  // twitter: {
-  //   title: "Amejro",
-  //   card: "summary_large_image",
-  // },
+  twitter: {
+    title: "Amejro",
+    card: "summary_large_image",
+  },
   icons: {
     shortcut: "/favicon.ico",
   },

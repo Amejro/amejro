@@ -1,15 +1,11 @@
 import Link from "next/link";
 import Amejro from "./logo/Amejro";
-import { useNotion } from "../hooks/notion_hooks";
-// export const revalidate = 600;
-async function NavBar() {
-  // const { getCategories } = useNotion();
-  // const categorydata = await getCategories();
-  // const categories = await categorydata.results;
 
-  const res = await fetch(`${process.env.CMS_END_POINT}/api/globals/nav`);
+async function NavBar() {
+  const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
+    next: { revalidate: 3600 },
+  });
   const data = await res.json();
-  // console.log(data);
 
   return (
     <div>
@@ -37,23 +33,13 @@ async function NavBar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {data.items?.map((category) => (
+              {data.docs?.map((category) => (
                 <li key={category?.id}>
-                  <Link href={`/category/${category.page}`}>
-                    {category.page}
+                  <Link href={`/category/${category.category}`}>
+                    {category.category}
                   </Link>
                 </li>
               ))}
-              {/* {categories?.map((category) => (
-                <li key={category?.properties.Status.id}>
-                  <Link
-                    href={`/category/${category.properties.Name.title[0].plain_text}`}
-                  >
-                    {category.properties.Name.title[0].plain_text}
-                    
-                  </Link>
-                </li>
-              ))} */}
             </ul>
           </div>
           <Link href={"/"} className="btn btn-ghost normal-case text-xl">
@@ -62,9 +48,11 @@ async function NavBar() {
         </nav>
         <nav className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {data.items?.map((category) => (
+            {data.docs?.map((category) => (
               <li key={category?.id}>
-                <Link href={`/category/${category.page}`}>{category.page}</Link>
+                <Link href={`/category/${category.category}`}>
+                  {category.category}
+                </Link>
               </li>
             ))}
 
