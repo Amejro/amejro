@@ -1,7 +1,7 @@
 import RSS from "rss";
 export async function GET(request, { params }) {
   const res = await fetch(`${process.env.CMS_END_POINT}/api/categories`, {
-    next: { revalidate: 0 },
+    next: { revalidate: 120 },
   });
   const data = await res.json();
   const categoryID = await data?.docs.find(
@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
 
   const Catres = await fetch(
     `${process.env.CMS_END_POINT}/api/categories/${categoryID.id}?depth=2`,
-    { next: { revalidate: 0 } }
+    { next: { revalidate: 120 } }
   );
   const Catdata = await Catres.json();
 
@@ -20,7 +20,7 @@ export async function GET(request, { params }) {
     feed_url: `https://amejro.xyz/rss.xml/${params?.category}`,
     site_url: `https://amejro.xyz`,
     copyright: `copyright &copy; ${new Date().getFullYear()} Amejro. All rights reserved`,
-    // image_url: properties.image.files[0]?.file.url,
+    // image_url: properties.image.files[0]?.file.url,s
     language: "en",
     categories: [],
     pubDate: new Date().toISOString(),
