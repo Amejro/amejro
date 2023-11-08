@@ -58,7 +58,9 @@ export default async function Home() {
                       </div>
                     ))}
 
-                  <div className="lg:flex flex-col flex-grow lg:ml-4">
+                  {/* <div className="lg:flex flex-col flex-grow lg:ml-4"> */}
+
+                  <ul className="divide-y divide-gray-100 py-2 px-4">
                     {data.docs
                       ?.sort((a, b) => {
                         if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -76,10 +78,13 @@ export default async function Home() {
                           </Link>
                         </div>
                       ))}
-                  </div>
+                  </ul>
                 </div>
                 {/* old list */}
-                <div className="border-t border-[#e3e3e3] py-5">
+
+                {/* <div className="border-t border-[#e3e3e3] py-5"> */}
+
+                <ul className="divide-y divide-gray-100 py-2 px-4">
                   {data.docs
                     ?.sort((a, b) => {
                       if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -97,7 +102,7 @@ export default async function Home() {
                         </Link>
                       </div>
                     ))}
-                </div>
+                </ul>
               </div>
             </div>
             {/* 3 */}
