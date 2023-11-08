@@ -107,7 +107,7 @@ export default async function Home() {
             </div>
           </section>
         </div>
-        {/* <div className="flex flex-col items-center relative w-full col-span-12">
+        <div className="flex flex-col items-center relative w-full col-span-12">
           <section className="grid lg:grid-cols-12 w-full gap-x-[16px] lg:gap-[16px]">
             <div className="lg:col-span-4">
               <CategoryCard cat={"Entertainment"} />
@@ -119,7 +119,7 @@ export default async function Home() {
               <CategoryCard cat={"Politics"} />
             </div>
           </section>
-        </div> */}
+        </div>
       </main>
     </div>
   );
