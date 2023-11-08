@@ -38,7 +38,9 @@ function HeroCard({ data }) {
             {date.getDay()} {monthNames[month]} {date.getFullYear()}
           </time>
         </p>
-        <h2 class="sm:text-xl text-sm font-medium text-white">{data?.title}</h2>
+        <h2 class="sm:text-xl text-base font-medium text-white">
+          {data?.title}
+        </h2>
       </div>
     </div>
   );

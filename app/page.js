@@ -79,7 +79,7 @@ export default async function Home() {
                   </div>
                 ))}
 
-              <ul className="divide-y  divide-gray-100 py-2 px-4">
+              <ul className="divide-y  divide-gray-100 py-2 px-0 lg:px-4">
                 {data.docs
                   ?.sort((a, b) => {
                     if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -100,7 +100,7 @@ export default async function Home() {
               </ul>
             </div>
 
-            <ul className="divide-y  divide-gray-100 py-2 px-4">
+            <ul className="divide-y  divide-gray-100 py-2 px-0 ">
               {data.docs
                 ?.sort((a, b) => {
                   if (new Date(a.createdAt) > new Date(b.createdAt)) {

@@ -34,7 +34,7 @@ function ListCard({ data }) {
       </div>
       <div>
         <Image
-          className="h-14 sm:h-20 w-14 sm:w-20 rounded-lg object-cover"
+          className="h-16 sm:h-20 w-16 sm:w-20 rounded-lg object-cover"
           alt={data?.title}
           src={data?.Image?.url}
           width={80}
