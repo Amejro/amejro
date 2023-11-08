@@ -69,7 +69,7 @@ async function Footer() {
 
         <aside>
           <Amejro />
-          <p>Copyright © 2023 - All right reserved</p>
+          <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
         </aside>
       </footer>
     </>
