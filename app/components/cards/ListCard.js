@@ -19,27 +19,6 @@ function ListCard({ data }) {
   const date = new Date(data?.updatedAt);
   const month = date.getMonth();
   return (
-    // <div className=" ">
-    //   <div className="customGrid py-2 ">
-    //     <div className="flex flex-col justify-evenly">
-    //       <h2 className=" leading-5 text-base font-semibold">{data?.title}</h2>
-
-    //       <p className="text-xs text-[#8e9299] text-right pr-5">
-    //         <span>publd</span> {data?.updatedAt?.split("T")[0]}
-    //       </p>
-    //     </div>
-    //     <div className=" bg-slate-700   w-[116px] h-[100px] rounded-md">
-    //       <Image
-    //         className="w-full h-full bg-slate-400 rounded-md"
-    //         alt={data?.title}
-    //         src={data?.Image?.url}
-    //         width={116}
-    //         height={100}
-    //       />
-    //     </div>
-    //   </div>
-    // </div>
-
     <li class="flex py-4">
       <div class="mr-2 flex-1 ">
         <h2 class=" sm:text-base text-sm font-medium text-gray-900 line-clamp-2">

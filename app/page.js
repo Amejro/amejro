@@ -12,10 +12,9 @@ export default async function Home() {
     next: { revalidate: 600 },
   });
   const data = await res.json();
-  // const date = new Date();
-  // console.log(new Date().getDay());
+
   const month = new Date().getMonth();
-  // console.log(new Date().getFullYear());
+
   const monthNames = [
     "Jan",
     "Feb",
