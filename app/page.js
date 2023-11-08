@@ -15,11 +15,11 @@ export default async function Home() {
 
   return (
     <div className="h-full">
-      <main className=" grid grid-cols-12 max-w-[1140px] lg:mx-auto gap-x-[32px] lg:gap-[32px]  ">
+      <main className="w-full grid grid-cols-12 max-w-[1140px] lg:mx-auto gap-x-[32px] lg:gap-[32px]  ">
         <div className="flex flex-col items-center relative w-full col-span-12 ">
           <section className="grid grid-cols-12 w-full gap-x-[16px] lg:gap-[16px]">
             {/* 1 */}
-            <div className="flex justify-between  items-center min-h-[72px] col-span-12 bg-[#fff] lg:bg-[#f6f8fc] px-4">
+            <div className="flex justify-between  items-center min-h-[72px] col-span-12 bg-[#fff] lg:bg-[#f6f8fc] px-2 sm:px-4">
               <div className="flex flex-col">
                 <h1 className="mb-[8px] text-xl font-semibold"> Discover</h1>
 
@@ -29,7 +29,7 @@ export default async function Home() {
             </div>
             {/* 2 */}
             <div className="col-span-12 lg:col-span-8  mb-5">
-              <div className="col-span-12 flex flex-col rounded-b-[18px] lg:rounded-[18px] border-b border-[#e3e3e3] bg-[#fff] px-4">
+              <div className="col-span-12 flex flex-col rounded-b-[18px] lg:rounded-[18px] border-b border-[#e3e3e3] bg-[#fff] px-2 sm:px-4">
                 <div className="flex justify-between items-center py-[30px]     w-full ">
                   <div className="flex items-center lg:border-b lg:border-[#e3e3e3] w-full pb-3">
                     <h3 className="text-[#1867DC]  text-xl font-bold">
@@ -38,7 +38,7 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div className="lg:flex lg:flex-row">
+                <div className=" lg:flex lg:flex-row">
                   {data.docs
                     ?.sort((a, b) => {
                       if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -49,7 +49,6 @@ export default async function Home() {
                     .slice(0, 1)
                     .map((latest) => (
                       <div key={latest.id}>
-                        {/* <Link href={`/blog/${latest.slug}`}> */}
                         <Link
                           href={`/category/${latest.category[0].category}/article/${latest.slug}`}
                         >
@@ -58,9 +57,7 @@ export default async function Home() {
                       </div>
                     ))}
 
-                  {/* <div className="lg:flex flex-col flex-grow lg:ml-4"> */}
-
-                  <ul className="divide-y divide-gray-100 py-2 px-4">
+                  <ul className="divide-y  divide-gray-100 py-2 px-0 sm:px-4">
                     {data.docs
                       ?.sort((a, b) => {
                         if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -80,11 +77,9 @@ export default async function Home() {
                       ))}
                   </ul>
                 </div>
+
                 {/* old list */}
-
-                {/* <div className="border-t border-[#e3e3e3] py-5"> */}
-
-                <ul className="divide-y divide-gray-100 py-2 px-4">
+                <ul className="divide-y  divide-gray-100 py-2 px-0 sm:px-4">
                   {data.docs
                     ?.sort((a, b) => {
                       if (new Date(a.createdAt) > new Date(b.createdAt)) {
@@ -105,13 +100,14 @@ export default async function Home() {
                 </ul>
               </div>
             </div>
+
             {/* 3 */}
             <div className="hidden lg:block lg:col-span-4">
               <CategoryCard />
             </div>
           </section>
         </div>
-        <div className="flex flex-col items-center relative w-full col-span-12">
+        {/* <div className="flex flex-col items-center relative w-full col-span-12">
           <section className="grid lg:grid-cols-12 w-full gap-x-[16px] lg:gap-[16px]">
             <div className="lg:col-span-4">
               <CategoryCard cat={"Entertainment"} />
@@ -123,7 +119,7 @@ export default async function Home() {
               <CategoryCard cat={"Politics"} />
             </div>
           </section>
-        </div>
+        </div> */}
       </main>
     </div>
   );

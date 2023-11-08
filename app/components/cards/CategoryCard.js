@@ -17,7 +17,7 @@ async function CategoryCard({ cat }) {
   const Catdata = await Catres?.json();
 
   return (
-    <div className="col-span-12 md:col-span-8 mb-5 ">
+    <div className="col-span-12 md:col-span-8 mb-5 w-full ">
       <div className="col-span-12 flex flex-col rounded-[18px] bg-[#fff] px-4">
         <div className="flex justify-between items-center py-[30px]  -mt-[8px] -mb-[8px] w-full ">
           <div className="flex items-center">

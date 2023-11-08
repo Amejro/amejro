@@ -26,7 +26,7 @@ function ListCard({ data }) {
 
     <li class="flex py-4">
       <div class="mr-4 flex-1">
-        <h2 class="text-base font-medium text-gray-900 line-clamp-2">
+        <h2 class=" sm:text-base text-sm font-medium text-gray-900 line-clamp-2">
           {data?.title}
         </h2>
         <div class="mt-1 text-sm text-gray-400">
